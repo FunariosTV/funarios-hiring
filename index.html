@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>document.documentElement.classList.add('js');</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Now Hiring: Producer / Production Coordinator | FUNarios</title>
+<meta name="description" content="FUNarios is hiring a Producer / Production Coordinator in Atlanta, GA. Independent contractor, immediate start.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     SETTINGS: paste your Apps Script Web App URL in the <script>
+     section at the bottom (look for SCRIPT_URL).
+     ============================================================ */
+  :root {
+    --bg: #ffffff;
+    --panel: #f6f6f8;
+    --panel-2: #ffffff;
+    --input: #ffffff;
+    --line: #e3e3e8;
+    --text: #111114;
+    --body: #3a3a42;
+    --muted: #6b6b75;
+    --red: #e63946;
+    --blue: #2f80ed;
+    --green: #1fa35a;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  a { color: var(--blue); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Header / hero ---------- */
+  header.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(600px 300px at 90% -10%, rgba(230,57,70,.10), transparent 60%),
+      radial-gradient(500px 280px at -10% 110%, rgba(47,128,237,.10), transparent 60%),
+      radial-gradient(400px 240px at 60% 120%, rgba(45,191,108,.10), transparent 60%);
+  }
+  .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .rings { position: relative; width: 46px; height: 46px; flex: none; }
+  .rings span {
+    position: absolute; width: 26px; height: 26px; border-radius: 50%;
+    border: 4px solid; background: transparent;
+  }
+  .rings span:nth-child(1) { border-color: var(--red);   top: 0;    left: 10px; }
+  .rings span:nth-child(2) { border-color: var(--blue);  top: 16px; left: 0; }
+  .rings span:nth-child(3) { border-color: var(--green); top: 16px; left: 20px; }
+  .wordmark { font-family: 'Anton', Impact, sans-serif; font-size: 28px; letter-spacing: 2px; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--green); margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Anton', Impact, sans-serif; font-weight: 400;
+    font-size: clamp(38px, 7vw, 64px); line-height: 1.05; margin: 0 0 18px;
+    letter-spacing: .5px;
+  }
+  h1 .accent { color: var(--red); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .tag {
+    font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+    background: var(--panel-2); border: 1px solid var(--line);
+  }
+  .tag.r { border-color: rgba(230,57,70,.5); }
+  .tag.b { border-color: rgba(47,128,237,.5); }
+  .tag.g { border-color: rgba(45,191,108,.5); }
+  .btn {
+    display: inline-block; cursor: pointer; border: 0; text-decoration: none;
+    font: 700 16px 'Inter', sans-serif; color: #fff; background: var(--red);
+    padding: 14px 26px; border-radius: 10px; transition: transform .1s, filter .15s;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: .6; cursor: wait; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 40px 0 8px; }
+  h2 {
+    font-family: 'Anton', Impact, sans-serif; font-weight: 400; font-size: 28px;
+    letter-spacing: 1px; margin: 0 0 14px; display: flex; align-items: center; gap: 12px;
+  }
+  h2::before { content: ''; width: 6px; height: 26px; border-radius: 3px; background: var(--c, var(--red)); }
+  .c-red { --c: var(--red); } .c-blue { --c: var(--blue); } .c-green { --c: var(--green); }
+  p { margin: 0 0 14px; color: var(--body); }
+  .callout {
+    background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--red);
+    border-radius: 10px; padding: 14px 18px; font-weight: 600; margin: 8px 0 0;
+  }
+  ul.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  ul.list li {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px 12px 40px; position: relative; color: var(--body);
+  }
+  ul.list li::before {
+    content: ''; position: absolute; left: 16px; top: 20px; width: 10px; height: 10px;
+    border-radius: 50%; border: 2px solid var(--c, var(--red));
+  }
+  ul.list li strong { color: var(--text); }
+  .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .detail { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .detail .k { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .detail .v { font-weight: 600; margin-top: 4px; }
+
+  /* ---------- Form ---------- */
+  #apply { padding-bottom: 64px; }
+  form.card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 28px; margin-top: 8px;
+  }
+  fieldset { border: 0; padding: 0; margin: 0 0 28px; }
+  legend {
+    font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 14px; padding: 0;
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .full { grid-column: 1 / -1; }
+  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .req { color: var(--red); }
+  .hint { font-weight: 400; color: var(--muted); font-size: 13px; }
+  input[type=text], input[type=email], input[type=tel], input[type=url], input[type=number], select, textarea {
+    width: 100%; background: var(--input); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 12px 14px; font: inherit; font-size: 15px;
+  }
+  textarea { min-height: 120px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: transparent; }
+  .invalid { border-color: var(--red) !important; }
+  .err { color: var(--red); font-size: 13px; margin-top: 6px; display: none; }
+  .err.show { display: block; }
+  .counter { font-size: 12px; color: var(--muted); text-align: right; margin-top: 4px; }
+  .radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-row label, .check {
+    display: flex; align-items: center; gap: 10px; font-weight: 500; cursor: pointer;
+    background: var(--input); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin: 0;
+  }
+  .check { align-items: flex-start; margin-bottom: 10px; }
+  .check input { margin-top: 5px; }
+  input[type=radio], input[type=checkbox] { accent-color: var(--green); width: 17px; height: 17px; flex: none; }
+  .ref {
+    border: 1px dashed var(--line); border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  }
+  .ref-title { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+  .drop {
+    border: 2px dashed var(--line); border-radius: 10px; padding: 22px; text-align: center;
+    background: var(--input); cursor: pointer; transition: border-color .15s;
+  }
+  .drop:hover, .drop.over { border-color: var(--blue); }
+  .drop input { display: none; }
+  .file-name { margin-top: 8px; font-weight: 600; color: var(--green); }
+  .or { text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: 2px; margin: 14px 0; }
+  .hp { position: absolute; left: -9999px; }
+  .submit-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .form-msg { font-weight: 600; }
+  .form-msg.bad { color: var(--red); }
+
+  .thanks {
+    display: none; text-align: center; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 44px 24px;
+  }
+  .thanks .rings { margin: 0 auto 18px; }
+  .thanks h3 { font-family: 'Anton', Impact, sans-serif; font-weight: 400; font-size: 32px; margin: 0 0 8px; }
+
+  .btn { box-shadow: 0 6px 18px rgba(230,57,70,.28); }
+  ul.list li, .detail { transition: transform .2s, box-shadow .2s; }
+  ul.list li:hover, .detail:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.06); }
+
+  /* ---------- Motion (only when JS is running) ---------- */
+  .js .hero-in { opacity: 0; transform: translateY(24px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
+  .js h1 .w { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .js h1 .w > span { display: inline-block; transform: translateY(110%); animation: wordUp .8s cubic-bezier(.2,.7,.2,1) forwards; }
+  .js .rings span { animation: pop .6s cubic-bezier(.3,1.6,.5,1) both; }
+  .js .rings span:nth-child(2) { animation-delay: .12s; }
+  .js .rings span:nth-child(3) { animation-delay: .24s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @keyframes wordUp { to { transform: none; } }
+  @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .js .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+  .js .reveal.from-left { transform: translateX(-50px); }
+  .js .reveal.from-right { transform: translateX(50px); }
+  .js .reveal.in { opacity: 1; transform: none; }
+  .js h2::before { transform: scaleY(0); transform-origin: bottom; transition: transform .6s .2s cubic-bezier(.2,.7,.2,1); }
+  .js .in h2::before, .js h2.in::before { transform: scaleY(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .hero-in, .js h1 .w > span, .js .rings span { animation: none; opacity: 1; transform: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .js h2::before { transform: none; }
+  }
+
+  footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    form.card { padding: 20px 16px; }
+    header.hero { padding: 36px 0 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="wordmark hero-in" style="animation-delay:.3s">FUNARIOS</div>
+    </div>
+    <div class="eyebrow hero-in" style="animation-delay:.2s">Now Hiring</div>
+    <h1 id="heroTitle">Producer / <span class="accent">Production Coordinator</span></h1>
+    <div class="tags hero-in" style="animation-delay:.9s">
+      <span class="tag r">Atlanta, GA</span>
+      <span class="tag b">Independent Contractor (1099)</span>
+      <span class="tag g">Immediate Start</span>
+    </div>
+    <a class="btn hero-in" style="animation-delay:1.1s" href="#apply">Apply Now</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="reveal c-red">
+    <h2>About FUNarios</h2>
+    <p>FUNarios is an Atlanta-based content studio producing urban comedy-drama for YouTube, Patreon, and Tubi. We drop new content multiple times per week and are scaling toward one million subscribers on YouTube. Our team is small, fast-moving, and voice-driven. Every piece of content has to fit our tone and audience.</p>
+  </section>
+
+  <section class="reveal c-blue">
+    <h2>The Role</h2>
+    <p>We are hiring a Producer / Production Coordinator to own the pipeline from script-approved to shoot-day-complete. You will be the person who makes sure every shoot happens on time, with the right cast, the right locations, and the right logistics, so our director and crew can focus on the work.</p>
+    <div class="callout reveal from-left">This is a contractor role based in Atlanta, with regular on-set presence required. Not remote.</div>
+  </section>
+
+  <section class="reveal c-green">
+    <h2>What You'll Own</h2>
+    <ul class="list c-green">
+      <li><strong>Casting coordination:</strong> Sourcing talent from our database and outside networks, sending audition requests, confirming bookings, handling talent agreements and payment paperwork.</li>
+      <li><strong>Call sheets:</strong> Drafting, sending, and confirming call sheets for every shoot day, including cast, crew, location, schedule, wardrobe, and props notes.</li>
+      <li><strong>Cast communication:</strong> Living in the casting inbox. Confirming bookings within 24 hours. Following up on unconfirmed talent. Handling cancellations and finding replacements fast.</li>
+      <li><strong>Production scheduling:</strong> Coordinating with the writers' room, director, DP, and editors to build a weekly shoot schedule that hits our drop calendar.</li>
+      <li><strong>Location and set logistics:</strong> Booking locations, coordinating with the studio, ordering food for set, managing on-set supplies.</li>
+      <li><strong>Vendor coordination:</strong> Working with photographers, equipment rentals, wardrobe, and any outside vendors.</li>
+      <li><strong>On-set presence:</strong> Being on set for shoots to run the day: checking in cast, keeping the schedule, handling problems in real time.</li>
+      <li><strong>Paperwork:</strong> Talent agreements, W-9s, releases, and NIL forms, all signed and filed before anyone steps on set.</li>
+    </ul>
+  </section>
+
+  <section class="reveal c-red">
+    <h2>Who You Are</h2>
+    <ul class="list c-red">
+      <li>2+ years of production coordination or producing experience: indie film, digital content, commercial, or scripted TV.</li>
+      <li>Based in Atlanta with reliable transportation.</li>
+      <li>Obsessive about email and communication. Nothing falls through the cracks.</li>
+      <li>Comfortable with fast turnarounds (we sometimes book 48 hours out).</li>
+      <li>Understands digital-first content (YouTube, Patreon, streaming), not just traditional TV/film.</li>
+      <li>Can watch our content and get why it works. If you have never seen FUNarios, watch us before applying.</li>
+      <li>Comfortable with mature themes. Our content is adult-oriented urban drama.</li>
+      <li>Detail-obsessed on call sheets, contracts, and cast confirmations.</li>
+      <li>Calm under pressure. Shoot days go sideways. You solve, not spiral.</li>
+    </ul>
+  </section>
+
+  <section class="reveal c-blue">
+    <h2>Bonus Points</h2>
+    <ul class="list c-blue">
+      <li>Existing relationships with Atlanta talent, casting directors, or agents.</li>
+      <li>Experience with digital-first / creator-economy productions.</li>
+      <li>Familiar with Google Workspace, casting databases, and production management tools.</li>
+    </ul>
+  </section>
+
+  <section class="reveal c-green">
+    <h2>The Details</h2>
+    <div class="details">
+      <div class="detail"><div class="k">Type</div><div class="v">Independent contractor (1099)</div></div>
+      <div class="detail"><div class="k">Location</div><div class="v">Atlanta-based, on set as needed (multiple shoot days per week)</div></div>
+      <div class="detail"><div class="k">Compensation</div><div class="v">Competitive monthly retainer, based on experience. Brand deal participation available.</div></div>
+      <div class="detail"><div class="k">Start Date</div><div class="v">Immediate</div></div>
+    </div>
+  </section>
+
+  <section id="apply" class="reveal c-red">
+    <h2>Apply</h2>
+    <p>Fields marked <span class="req">*</span> are required. <strong>Applications without the short note will not be reviewed.</strong></p>
+
+    <form class="card" id="appForm" novalidate>
+      <!-- Spam trap: real people never see or fill this -->
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <fieldset>
+        <legend>1. Contact Info</legend>
+        <div class="grid">
+          <div>
+            <label for="fullName">Full name <span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName" autocomplete="name" required>
+            <div class="err">Please enter your full name.</div>
+          </div>
+          <div>
+            <label for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <div class="err">Please enter a valid email.</div>
+          </div>
+          <div>
+            <label for="phone">Phone <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+            <div class="err">Please enter your phone number.</div>
+          </div>
+          <div>
+            <label for="city">City / neighborhood <span class="req">*</span></label>
+            <input type="text" id="city" name="city" placeholder="e.g. East Atlanta" required>
+            <div class="err">Please enter where you're based.</div>
+          </div>
+          <div class="full">
+            <label for="portfolio">LinkedIn, IMDb, or website <span class="hint">(optional)</span></label>
+            <input type="url" id="portfolio" name="portfolio" placeholder="https://">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Quick Check</legend>
+        <div class="grid">
+          <div>
+            <label>Are you based in Atlanta? <span class="req">*</span></label>
+            <div class="radio-row" data-group="inAtlanta">
+              <label><input type="radio" name="inAtlanta" value="Yes"> Yes</label>
+              <label><input type="radio" name="inAtlanta" value="No"> No</label>
+            </div>
+            <div class="err">Please choose one.</div>
+          </div>
+          <div>
+            <label>Reliable transportation? <span class="req">*</span></label>
+            <div class="radio-row" data-group="transport">
+              <label><input type="radio" name="transport" value="Yes"> Yes</label>
+              <label><input type="radio" name="transport" value="No"> No</label>
+            </div>
+            <div class="err">Please choose one.</div>
+          </div>
+          <div>
+            <label for="years">Years of production coordination / producing experience <span class="req">*</span></label>
+            <select id="years" name="years" required>
+              <option value="">Select…</option>
+              <option>Less than 1</option>
+              <option>1–2</option>
+              <option>2–4</option>
+              <option>5+</option>
+            </select>
+            <div class="err">Please select your experience.</div>
+          </div>
+          <div>
+            <label for="startDate">Earliest start date <span class="req">*</span></label>
+            <input type="text" id="startDate" name="startDate" placeholder="e.g. Immediately, or Oct 6" required>
+            <div class="err">Please tell us when you can start.</div>
+          </div>
+          <div class="full">
+            <label class="check"><input type="checkbox" name="watched" value="Yes"> I have watched FUNarios content and understand the tone. <span class="req">*</span></label>
+            <label class="check"><input type="checkbox" name="matureOk" value="Yes"> I'm comfortable working on adult-oriented urban drama. <span class="req">*</span></label>
+            <label class="check"><input type="checkbox" name="onSetOk" value="Yes"> I can be on set multiple shoot days per week, sometimes booked 48 hours out. <span class="req">*</span></label>
+            <div class="err" id="checksErr">Please confirm all three.</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Your Experience</legend>
+        <label>Resume <span class="req">*</span> <span class="hint">(upload a file or write a breakdown below)</span></label>
+        <div class="drop" id="drop">
+          <input type="file" id="resume" accept=".pdf,.doc,.docx">
+          <div><strong>Click to upload</strong> or drag your resume here</div>
+          <div class="hint">PDF or Word, up to 10 MB</div>
+          <div class="file-name" id="fileName"></div>
+        </div>
+        <div class="or">OR</div>
+        <label for="breakdown">Written breakdown of your production experience</label>
+        <textarea id="breakdown" name="breakdown" placeholder="Productions you've worked on, your role, the size of the team, what you were responsible for…"></textarea>
+        <div class="err" id="resumeErr">Please upload a resume or write a breakdown of your experience.</div>
+
+        <div style="margin-top:16px">
+          <label for="links">Links to past productions you've coordinated <span class="hint">(one per line)</span></label>
+          <textarea id="links" name="links" style="min-height:90px" placeholder="https://youtube.com/…&#10;https://…"></textarea>
+        </div>
+        <div style="margin-top:16px">
+          <label for="bonus">Bonus: Atlanta talent, casting, or agent relationships? Tools you use? <span class="hint">(optional)</span></label>
+          <textarea id="bonus" name="bonus" style="min-height:90px"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. References <span class="hint" style="text-transform:none;letter-spacing:0">(2–3 from past productions)</span></legend>
+        <div id="refs"></div>
+        <div class="err" id="refsErr">Please add at least 2 complete references (name, production/role, and phone or email).</div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Why FUNarios? <span class="req">*</span></legend>
+        <label for="whyNote">In 3–5 sentences, tell us why FUNarios specifically, not just any production job.</label>
+        <textarea id="whyNote" name="whyNote" required></textarea>
+        <div class="counter" id="whyCounter">0 sentences</div>
+        <div class="err">Please write at least 3 sentences. Applications without this note will not be reviewed.</div>
+      </fieldset>
+
+      <div class="submit-row">
+        <button class="btn" type="submit" id="submitBtn">Submit Application</button>
+        <span class="form-msg" id="formMsg" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <div class="thanks" id="thanks">
+      <div class="rings" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h3>Application received</h3>
+      <p>Thanks for applying to FUNarios. Our team reviews every application with a note and will reach out if it's a fit.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">FUNarios LLC · Atlanta, GA</div>
+</footer>
+
+<script>
+  /* =====================================================================
+     STEP 3 OF SETUP: paste your Apps Script Web App URL between the quotes.
+     It looks like: https://script.google.com/macros/s/XXXXXXXX/exec
+     ===================================================================== */
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwR3Qbf4A_Nkik8ladMTVyJ5gWpBYHBniTqsPRkWRgM4S8zY7GxVcIL1CdUEIY37-oJ/exec';
+
+
+  // ---------- Animations ----------
+  (function () {
+    // Split hero title into words that slide up one by one
+    const h1 = document.getElementById('heroTitle');
+    let i = 0;
+    const wrapWords = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part.trim()) { frag.append(part); return; }
+            const w = document.createElement('span'); w.className = 'w';
+            const inner = document.createElement('span'); inner.textContent = part;
+            inner.style.animationDelay = (0.35 + i++ * 0.12) + 's';
+            w.append(inner); frag.append(w);
+          });
+          n.replaceWith(frag);
+        } else wrapWords(n);
+      });
+    };
+    wrapWords(h1);
+
+    // Stagger list items and detail cards
+    document.querySelectorAll('ul.list li, .detail').forEach(el => {
+      el.classList.add('reveal', el.closest('.details') ? 'from-left' : 'from-right');
+    });
+    document.querySelectorAll('ul.list, .details').forEach(group => {
+      [...group.children].forEach((c, n) => c.style.transitionDelay = (n * 0.08) + 's');
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  })();
+
+  const MAX_MB = 10;
+  const form = document.getElementById('appForm');
+  const $ = id => document.getElementById(id);
+
+  // ---------- Reference blocks ----------
+  const refs = $('refs');
+  for (let i = 1; i <= 3; i++) {
+    refs.insertAdjacentHTML('beforeend', `
+      <div class="ref">
+        <div class="ref-title">Reference ${i} ${i <= 2 ? '<span class="req">*</span>' : '<span class="hint">(optional)</span>'}</div>
+        <div class="grid">
+          <div><label for="ref${i}Name">Name</label><input type="text" id="ref${i}Name"></div>
+          <div><label for="ref${i}Prod">Production / their role</label><input type="text" id="ref${i}Prod"></div>
+          <div class="full"><label for="ref${i}Contact">Phone or email</label><input type="text" id="ref${i}Contact"></div>
+        </div>
+      </div>`);
+  }
+
+  // ---------- Resume upload ----------
+  const drop = $('drop'), fileInput = $('resume');
+  let resumeFile = null;
+  drop.addEventListener('click', () => fileInput.click());
+  ['dragenter','dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', ev => { if (ev.dataTransfer.files[0]) setFile(ev.dataTransfer.files[0]); });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+  function setFile(f) {
+    const ok = /\.(pdf|docx?)$/i.test(f.name);
+    if (!ok) { $('fileName').textContent = ''; resumeFile = null; alertMsg('Resume must be a PDF or Word file.'); return; }
+    if (f.size > MAX_MB * 1024 * 1024) { $('fileName').textContent = ''; resumeFile = null; alertMsg(`Resume must be under ${MAX_MB} MB.`); return; }
+    resumeFile = f;
+    $('fileName').textContent = '✓ ' + f.name;
+    $('resumeErr').classList.remove('show');
+    alertMsg('');
+  }
+
+  // ---------- Sentence counter ----------
+  const countSentences = t => (t.trim().match(/[^.!?]+[.!?]+(\s|$)/g) || []).length + (/[^.!?\s]\s*$/.test(t.trim()) ? 1 : 0);
+  $('whyNote').addEventListener('input', e => {
+    const n = e.target.value.trim() ? countSentences(e.target.value) : 0;
+    $('whyCounter').textContent = n + (n === 1 ? ' sentence' : ' sentences');
+  });
+
+  // ---------- Validation ----------
+  function flag(el, bad) {
+    const box = el.closest('.grid > div, fieldset > div, fieldset') ;
+    el.classList.toggle('invalid', bad);
+    const err = el.parentElement.querySelector('.err') || (box && box.querySelector('.err'));
+    if (err) err.classList.toggle('show', bad);
+    return !bad;
+  }
+  function validate() {
+    let ok = true, first = null;
+    const mark = (el, bad) => { if (!flag(el, bad)) { ok = false; first = first || el; } };
+
+    mark($('fullName'), !$('fullName').value.trim());
+    mark($('email'), !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('email').value.trim()));
+    mark($('phone'), $('phone').value.replace(/\D/g, '').length < 10);
+    mark($('city'), !$('city').value.trim());
+    mark($('years'), !$('years').value);
+    mark($('startDate'), !$('startDate').value.trim());
+
+    ['inAtlanta','transport'].forEach(n => {
+      const picked = form.querySelector(`input[name=${n}]:checked`);
+      const row = form.querySelector(`[data-group=${n}]`);
+      row.nextElementSibling.classList.toggle('show', !picked);
+      if (!picked) { ok = false; first = first || row; }
+    });
+
+    const checks = ['watched','matureOk','onSetOk'].every(n => form.querySelector(`input[name=${n}]`).checked);
+    $('checksErr').classList.toggle('show', !checks);
+    if (!checks) { ok = false; first = first || $('checksErr'); }
+
+    const hasResume = resumeFile || $('breakdown').value.trim().length > 30;
+    $('resumeErr').classList.toggle('show', !hasResume);
+    if (!hasResume) { ok = false; first = first || $('drop'); }
+
+    let goodRefs = 0;
+    for (let i = 1; i <= 3; i++) {
+      if ($(`ref${i}Name`).value.trim() && $(`ref${i}Prod`).value.trim() && $(`ref${i}Contact`).value.trim()) goodRefs++;
+    }
+    $('refsErr').classList.toggle('show', goodRefs < 2);
+    if (goodRefs < 2) { ok = false; first = first || $('ref1Name'); }
+
+    const why = $('whyNote');
+    const whyBad = countSentences(why.value) < 3;
+    why.classList.toggle('invalid', whyBad);
+    why.parentElement.querySelector('.err').classList.toggle('show', whyBad);
+    if (whyBad) { ok = false; first = first || why; }
+
+    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return ok;
+  }
+
+  function alertMsg(t, bad = true) {
+    $('formMsg').textContent = t;
+    $('formMsg').classList.toggle('bad', bad);
+  }
+
+  const toBase64 = f => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(f);
+  });
+
+  // ---------- Submit ----------
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    alertMsg('');
+    if (form.website.value) return; // spam bot
+    if (!validate()) { alertMsg('Please fix the highlighted fields.'); return; }
+    if (SCRIPT_URL.includes('PASTE_')) { alertMsg('Form not connected yet: add the Apps Script URL.'); return; }
+
+    const btn = $('submitBtn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+
+    try {
+      const refsOut = [];
+      for (let i = 1; i <= 3; i++) {
+        const n = $(`ref${i}Name`).value.trim();
+        if (n) refsOut.push(`${n} | ${$(`ref${i}Prod`).value.trim()} | ${$(`ref${i}Contact`).value.trim()}`);
+      }
+      const payload = {
+        fullName: $('fullName').value.trim(),
+        email: $('email').value.trim(),
+        phone: $('phone').value.trim(),
+        city: $('city').value.trim(),
+        portfolio: $('portfolio').value.trim(),
+        inAtlanta: form.querySelector('input[name=inAtlanta]:checked').value,
+        transport: form.querySelector('input[name=transport]:checked').value,
+        years: $('years').value,
+        startDate: $('startDate').value.trim(),
+        watched: 'Yes', matureOk: 'Yes', onSetOk: 'Yes',
+        breakdown: $('breakdown').value.trim(),
+        links: $('links').value.trim(),
+        bonus: $('bonus').value.trim(),
+        ref1: refsOut[0] || '', ref2: refsOut[1] || '', ref3: refsOut[2] || '',
+        whyNote: $('whyNote').value.trim(),
+        resumeName: resumeFile ? resumeFile.name : '',
+        resumeType: resumeFile ? (resumeFile.type || 'application/octet-stream') : '',
+        resumeData: resumeFile ? await toBase64(resumeFile) : ''
+      };
+
+      // text/plain avoids a CORS preflight that Apps Script can't answer
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      const out = await res.json();
+      if (!out.ok) throw new Error(out.error || 'Unknown error');
+
+      form.style.display = 'none';
+      $('thanks').style.display = 'block';
+      $('thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      console.error(err);
+      alertMsg('Something went wrong sending your application. Please try again, or email lonnie@funarios.tv.');
+      btn.disabled = false; btn.textContent = 'Submit Application';
+    }
+  });
+</script>
+</body>
+</html>
