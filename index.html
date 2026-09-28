@@ -276,6 +276,18 @@
     .tab { padding: 7px 11px; font-size: 13px; }
   }
 
+  /* Animated form sections */
+  .form-step legend { position: relative; padding-bottom: 8px; }
+  .form-step legend::after {
+    content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 48px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--red), var(--blue), var(--green));
+  }
+  .js .form-step legend::after { transform: scaleX(0); transform-origin: left; transition: transform .7s .35s cubic-bezier(.2,.7,.2,1); }
+  .js .form-step.in legend::after { transform: scaleX(1); }
+  fieldset.form-step { transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1), box-shadow .2s; border-radius: 10px; }
+  fieldset.form-step:focus-within legend { color: var(--text); }
+  @media (prefers-reduced-motion: reduce) { .js .form-step legend::after { transform: none; transition: none; } }
+
   footer { border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--muted); font-size: 13px; }
 
   @media (max-width: 640px) {
@@ -743,6 +755,13 @@
     });
     document.querySelectorAll('ul.list, .details').forEach(group => {
       [...group.children].forEach((c, n) => c.style.transitionDelay = (n * 0.08) + 's');
+    });
+
+    // Form sections slide in one by one as you scroll
+    document.querySelectorAll('form.card').forEach(f => {
+      [...f.querySelectorAll(':scope > fieldset, :scope > .submit-row')].forEach((el, n) => {
+        el.classList.add('reveal', n % 2 ? 'from-right' : 'from-left', 'form-step');
+      });
     });
 
     const io = new IntersectionObserver(entries => {
