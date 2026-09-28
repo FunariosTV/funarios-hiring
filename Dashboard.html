@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f6f8; --card: #fff; --line: #e3e3e8; --text: #111114; --body: #3a3a42; --muted: #6b6b75;
+    --red: #e3161e; --blue: #2433d6; --green: #16a32a; --amber: #b7791f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  a { color: var(--blue); }
+  button { font: inherit; cursor: pointer; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+  header { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
+  header .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { font-family: Anton, Impact, sans-serif; font-size: 22px; letter-spacing: 1.5px; }
+  .brand span { color: var(--red); }
+  .grow { flex: 1; }
+  .me { color: var(--muted); font-size: 13px; }
+  .hbtn { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 7px 12px; font-weight: 600; font-size: 13px; }
+  .hbtn:hover { background: var(--bg); }
+
+  .tabs { display: flex; gap: 8px; margin: 22px 0 14px; }
+  .tab { border: 0; background: transparent; padding: 9px 16px; border-radius: 999px; font-weight: 700; color: var(--muted); }
+  .tab.active { background: var(--text); color: #fff; }
+  .tab .n { opacity: .7; font-weight: 600; margin-left: 4px; }
+
+  .stats { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .stat { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; font-size: 13px; cursor: pointer; }
+  .stat b { font-size: 18px; margin-right: 6px; }
+  .stat.on { border-color: var(--text); box-shadow: inset 0 0 0 1px var(--text); }
+
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .toolbar input, .toolbar select { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 9px 12px; font: inherit; font-size: 14px; }
+  .toolbar input { flex: 1; min-width: 220px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding-bottom: 60px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform .15s, box-shadow .15s; display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+  .thumb { aspect-ratio: 4/3; background: #eceef2 center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 40px; font-family: Anton, sans-serif; }
+  .cbody { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .cname { font-weight: 700; font-size: 16px; }
+  .csub { color: var(--muted); font-size: 13px; }
+  .crow { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 8px; }
+  .pill { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #eceef2; color: var(--body); white-space: nowrap; }
+  .pill.New { background: #e8edff; color: var(--blue); }
+  .pill.Selected, .pill.Booked, .pill.Hired, .pill.Offer { background: #e3f6e7; color: var(--green); }
+  .pill.Pass { background: #fde8e8; color: var(--red); }
+  .pill.Callback, .pill.Interview-Invited, .pill.Interviewed { background: #fdf3e1; color: var(--amber); }
+  .mailed { font-size: 12px; color: var(--green); font-weight: 600; }
+
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; grid-column: 1 / -1; }
+
+  /* modal */
+  .overlay { position: fixed; inset: 0; background: rgba(10,10,15,.55); display: none; align-items: flex-start; justify-content: center; padding: 30px 14px; overflow-y: auto; z-index: 50; }
+  .overlay.show { display: flex; }
+  .modal { background: #fff; border-radius: 14px; width: 100%; max-width: 880px; position: relative; }
+  .modal.small { max-width: 560px; }
+  .mhead { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; gap: 14px; align-items: center; }
+  .mhead h2 { margin: 0; font-family: Anton, Impact, sans-serif; font-weight: 400; font-size: 28px; letter-spacing: .5px; }
+  .close { position: absolute; top: 14px; right: 16px; border: 0; background: none; font-size: 26px; line-height: 1; color: var(--muted); }
+  .mbody { padding: 20px 24px; }
+  .cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; }
+  .video { aspect-ratio: 16/9; width: 100%; border: 0; border-radius: 10px; background: #000; }
+  .shots { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .shots a { width: 88px; height: 88px; border-radius: 8px; background: #eceef2 center/cover no-repeat; display: block; }
+  dl { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; margin: 0; font-size: 14px; }
+  dt { color: var(--muted); font-weight: 600; }
+  dd { margin: 0; word-break: break-word; }
+  .block { margin-top: 16px; }
+  .block h4 { margin: 0 0 6px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .block p { margin: 0; white-space: pre-wrap; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding: 16px 24px; border-top: 1px solid var(--line); background: #fafafb; border-radius: 0 0 14px 14px; }
+  .btn { border: 0; border-radius: 9px; padding: 11px 18px; font-weight: 700; color: #fff; background: var(--text); }
+  .btn.green { background: var(--green); }
+  .btn.red { background: #fff; color: var(--red); border: 1px solid #f3b7b9; }
+  .btn.blue { background: var(--blue); }
+  .btn[disabled] { opacity: .55; cursor: wait; }
+  .actions select { border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; font: inherit; }
+  .preview { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; white-space: pre-wrap; font-size: 14px; max-height: 340px; overflow: auto; }
+  .warn { background: #fdf3e1; color: #7a4d06; border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 12px; }
+  label.f { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  input.f { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: inherit; }
+  .hint { color: var(--muted); font-size: 13px; }
+
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: #fff; padding: 12px 18px; border-radius: 10px; font-weight: 600; opacity: 0; transition: .25s; z-index: 99; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateX(-50%); }
+  .toast.bad { background: var(--red); }
+  .loading { text-align: center; padding: 80px 0; color: var(--muted); }
+
+  @media (max-width: 720px) {
+    .cols { grid-template-columns: 1fr; }
+    dl { grid-template-columns: 110px 1fr; }
+    .me { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">FUN<span>ARIOS</span> DASHBOARD</div>
+    <div class="grow"></div>
+    <span class="me" id="me"></span>
+    <button class="hbtn" id="settingsBtn">⚙ Settings</button>
+    <button class="hbtn" id="refreshBtn">↻ Refresh</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab active" data-tab="actor">Actor Submissions <span class="n" id="nActor"></span></button>
+    <button class="tab" data-tab="producer">Producer Applicants <span class="n" id="nProducer"></span></button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="toolbar">
+    <input id="q" placeholder="Search name, email, Instagram…">
+    <select id="roleFilter"></select>
+    <select id="statusFilter"></select>
+  </div>
+  <div class="grid" id="grid"><div class="loading">Loading submissions…</div></div>
+</div>
+
+<div class="overlay" id="detail"><div class="modal" id="detailBox"></div></div>
+<div class="overlay" id="confirm"><div class="modal small" id="confirmBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- tiny helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const driveIds = s => (String(s || '').match(/(?:\/d\/|id=)([\w-]{10,})/g) || []).map(m => m.replace(/^(\/d\/|id=)/, ''));
+const safeUrl = u => /^https?:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '';
+const link = (u, text) => safeUrl(u) ? `<a href="${esc(safeUrl(u))}" target="_blank" rel="noopener">${esc(text || u)}</a>` : esc(u || '–');
+function toast(msg, bad) {
+  const t = $('toast'); t.textContent = msg; t.className = 'toast show' + (bad ? ' bad' : '');
+  clearTimeout(t._h); t._h = setTimeout(() => t.className = 'toast', 3200);
+}
+function call(fn, ...args) {
+  return new Promise((resolve, reject) => {
+    google.script.run.withSuccessHandler(resolve).withFailureHandler(e => reject(e && e.message ? e : new Error(String(e))))[fn](...args);
+  });
+}
+
+/* ---------- state ---------- */
+let DATA = null, TAB = 'actor', STATUS = '', thumbs = {};
+const list = () => TAB === 'actor' ? DATA.actors : DATA.producers;
+const statuses = () => TAB === 'actor' ? DATA.actorStatuses : DATA.producerStatuses;
+
+async function load() {
+  $('grid').innerHTML = '<div class="loading">Loading submissions…</div>';
+  try {
+    DATA = await call('getDashboardData');
+    $('me').textContent = 'Signed in as ' + DATA.me;
+    $('nActor').textContent = DATA.actors.length;
+    $('nProducer').textContent = DATA.producers.length;
+    buildFilters();
+    render();
+  } catch (e) {
+    $('grid').innerHTML = `<div class="empty">Couldn't load data: ${esc(e.message)}</div>`;
+  }
+}
+
+function buildFilters() {
+  const rf = $('roleFilter');
+  if (TAB === 'actor') {
+    const roles = [...new Set(DATA.actors.map(a => a['Role Auditioning For']).filter(Boolean))].sort();
+    rf.innerHTML = '<option value="">All roles</option>' + roles.map(r => `<option>${esc(r)}</option>`).join('');
+    rf.style.display = roles.length ? '' : 'none';
+  } else rf.style.display = 'none';
+  $('statusFilter').innerHTML = '<option value="">All statuses</option>' + statuses().map(s => `<option>${esc(s)}</option>`).join('');
+  $('statusFilter').value = STATUS;
+}
+
+function filtered() {
+  const q = $('q').value.trim().toLowerCase();
+  const role = TAB === 'actor' ? $('roleFilter').value : '';
+  return list().filter(r =>
+    (!STATUS || (r['Status'] || 'New') === STATUS) &&
+    (!role || r['Role Auditioning For'] === role) &&
+    (!q || [r['Full Name'], r['Email'], r['Instagram'], r['Phone'], r['City']].join(' ').toLowerCase().includes(q)));
+}
+
+function render() {
+  // status counters
+  const counts = {};
+  list().forEach(r => { const s = r['Status'] || 'New'; counts[s] = (counts[s] || 0) + 1; });
+  $('stats').innerHTML = `<div class="stat ${STATUS ? '' : 'on'}" data-s=""><b>${list().length}</b>All</div>` +
+    statuses().filter(s => counts[s]).map(s => `<div class="stat ${STATUS === s ? 'on' : ''}" data-s="${esc(s)}"><b>${counts[s]}</b>${esc(s)}</div>`).join('');
+
+  const rows = filtered();
+  if (!rows.length) { $('grid').innerHTML = '<div class="empty">No submissions match.</div>'; return; }
+  $('grid').innerHTML = rows.map(r => {
+    const st = r['Status'] || 'New';
+    const shot = TAB === 'actor' ? driveIds(r['Headshots'])[0] : '';
+    const initials = (r['Full Name'] || '?').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const sub = TAB === 'actor'
+      ? `${esc(r['Role Auditioning For'] || r['Instagram'] || '')} · ${esc(r['In Atlanta'] === 'Yes' ? 'Atlanta' : (r['In Atlanta'] || ''))}`
+      : `${esc(r['Years Exp'] || '?')} yrs exp · ${esc(r['City'] || '')}`;
+    return `<div class="card" data-row="${r._row}">
+      <div class="thumb" ${shot ? `data-thumb="${esc(shot)}"` : ''}>${initials}</div>
+      <div class="cbody">
+        <div class="cname">${esc(r['Full Name'])}</div>
+        <div class="csub">${sub}</div>
+        <div class="csub">${esc(r['Submitted'])}</div>
+        <div class="crow"><span class="pill ${esc(st.replace(/\s+/g, '-'))}">${esc(st)}</span>
+          ${r['Last Email Sent'] ? '<span class="mailed">✉ Emailed</span>' : ''}</div>
+      </div></div>`;
+  }).join('');
+  loadThumbs();
+}
+
+async function loadThumbs() {
+  const els = [...document.querySelectorAll('[data-thumb]')];
+  const need = [...new Set(els.map(e => e.dataset.thumb).filter(id => !(id in thumbs)))];
+  for (let i = 0; i < need.length; i += 12) {
+    try { Object.assign(thumbs, await call('getThumbs', need.slice(i, i + 12))); } catch (e) { /* ignore */ }
+    need.slice(i, i + 12).forEach(id => { if (!(id in thumbs)) thumbs[id] = ''; });
+    paintThumbs();
+  }
+  paintThumbs();
+}
+function paintThumbs() {
+  document.querySelectorAll('[data-thumb]').forEach(e => {
+    const v = thumbs[e.dataset.thumb];
+    if (v) { e.style.backgroundImage = `url("${v}")`; e.textContent = ''; }
+  });
+}
+
+/* ---------- detail modal ---------- */
+function openDetail(row) {
+  const r = list().find(x => x._row === row);
+  if (!r) return;
+  const st = r['Status'] || 'New';
+  const statusSel = `<select id="statusSel">${statuses().map(s => `<option ${s === st ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>`;
+  let html;
+  if (TAB === 'actor') {
+    const vid = driveIds(r['Audition Video'])[0];
+    const shots = driveIds(r['Headshots']);
+    html = `
+      <button class="close" data-close>×</button>
+      <div class="mhead"><div><h2>${esc(r['Full Name'])}</h2>
+        <div class="csub">${esc(r['Instagram'] || '')} · <span class="pill ${esc(st.replace(/\s+/g, '-'))}">${esc(st)}</span></div></div></div>
+      <div class="mbody"><div class="cols">
+        <div>
+          ${vid ? `<iframe class="video" src="https://drive.google.com/file/d/${esc(vid)}/preview" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <div class="hint" style="margin-top:6px">Video not playing? New uploads can take a few minutes to process. <a href="https://drive.google.com/file/d/${esc(vid)}/view" target="_blank">Open in Drive</a></div>`
+          : ''}
+          <div class="block" style="${vid ? '' : 'margin-top:0'}"><h4>Headshots</h4><div class="shots">${shots.map(id =>
+            `<a href="https://drive.google.com/file/d/${esc(id)}/view" target="_blank" data-thumb="${esc(id)}"></a>`).join('') || '–'}</div></div>
+          <div class="block"><h4>Why FUNarios</h4><p>${esc(r['Why FUNarios'])}</p></div>
+          ${r['Special Skills'] ? `<div class="block"><h4>Special skills</h4><p>${esc(r['Special Skills'])}</p></div>` : ''}
+        </div>
+        <div><dl>
+          <dt>Email</dt><dd><a href="mailto:${esc(r['Email'])}">${esc(r['Email'])}</a></dd>
+          <dt>Phone</dt><dd>${esc(r['Phone'])}</dd>
+          <dt>Instagram</dt><dd>${esc(r['Instagram'])}</dd>
+          <dt>Prefers</dt><dd>${esc(r['Preferred Contact'])}</dd>
+          <dt>In Atlanta</dt><dd>${esc(r['In Atlanta'])}</dd>
+          <dt>Availability</dt><dd>${esc(r['Availability'])}</dd>
+          <dt>Union</dt><dd>${esc(r['Union'] || '–')}</dd>
+          ${r['Role Auditioning For'] ? `<dt>Role</dt><dd>${esc(r['Role Auditioning For'])}</dd>` : ''}
+          <dt>Reel</dt><dd>${link(r['Reel Link (with time codes)'])}</dd>
+          <dt>IMDb</dt><dd>${link(r['IMDb'])}</dd>
+          <dt>Resume</dt><dd>${r['Acting Resume'] ? link(r['Acting Resume'].split('\n')[0], 'Open resume') : '–'}</dd>
+          <dt>Consent</dt><dd>${esc(r['Release Consent'])}</dd>
+          <dt>Heard via</dt><dd>${esc(r['Heard About Us'])}</dd>
+          <dt>Submitted</dt><dd>${esc(r['Submitted'])}</dd>
+          <dt>Last email</dt><dd>${esc(r['Last Email Sent'] || 'None yet')}</dd>
+        </dl></div>
+      </div></div>
+      <div class="actions">
+        <button class="btn green" data-email="selected">✓ We'd Love to Work With You</button>
+        <button class="btn red" data-email="pass">Not Selected</button>
+        <span class="grow"></span>
+        <span class="hint">Status</span> ${statusSel}
+      </div>`;
+  } else {
+    html = `
+      <button class="close" data-close>×</button>
+      <div class="mhead"><div><h2>${esc(r['Full Name'])}</h2>
+        <div class="csub">Producer / Production Coordinator · <span class="pill ${esc(st.replace(/\s+/g, '-'))}">${esc(st)}</span></div></div></div>
+      <div class="mbody"><div class="cols">
+        <div>
+          <div class="block" style="margin-top:0"><h4>Why FUNarios</h4><p>${esc(r['Why FUNarios'])}</p></div>
+          ${r['Written Breakdown'] ? `<div class="block"><h4>Experience breakdown</h4><p>${esc(r['Written Breakdown'])}</p></div>` : ''}
+          ${r['Past Production Links'] ? `<div class="block"><h4>Past productions</h4><p>${r['Past Production Links'].split('\n').map(u => link(u)).join('<br>')}</p></div>` : ''}
+          ${r['Bonus (relationships/tools)'] ? `<div class="block"><h4>Relationships / tools</h4><p>${esc(r['Bonus (relationships/tools)'])}</p></div>` : ''}
+          <div class="block"><h4>References</h4><p>${[r['Reference 1'], r['Reference 2'], r['Reference 3']].filter(Boolean).map(esc).join('<br>') || '–'}</p></div>
+        </div>
+        <div><dl>
+          <dt>Email</dt><dd><a href="mailto:${esc(r['Email'])}">${esc(r['Email'])}</a></dd>
+          <dt>Phone</dt><dd>${esc(r['Phone'])}</dd>
+          <dt>City</dt><dd>${esc(r['City'])}</dd>
+          <dt>In Atlanta</dt><dd>${esc(r['In Atlanta'])}</dd>
+          <dt>Transportation</dt><dd>${esc(r['Transportation'])}</dd>
+          <dt>Experience</dt><dd>${esc(r['Years Exp'])} years</dd>
+          <dt>Can start</dt><dd>${esc(r['Earliest Start'])}</dd>
+          <dt>Resume</dt><dd>${r['Resume Link'] ? link(r['Resume Link'], 'Open resume') : 'Written breakdown only'}</dd>
+          <dt>Profile</dt><dd>${link(r['LinkedIn / IMDb / Site'])}</dd>
+          <dt>Submitted</dt><dd>${esc(r['Submitted'])}</dd>
+          <dt>Last email</dt><dd>${esc(r['Last Email Sent'] || 'None yet')}</dd>
+        </dl></div>
+      </div></div>
+      <div class="actions">
+        <button class="btn blue" data-email="interview">📅 Invite to Interview</button>
+        <button class="btn red" data-email="pass">Not Selected</button>
+        <span class="grow"></span>
+        <span class="hint">Status</span> ${statusSel}
+      </div>`;
+  }
+  $('detailBox').innerHTML = html;
+  $('detailBox').dataset.row = row;
+  $('detail').classList.add('show');
+  paintThumbs(); loadThumbs();
+
+  $('statusSel').addEventListener('change', async e => {
+    const val = e.target.value;
+    try {
+      await call('setStatus', TAB, r._row, r['Email'], val);
+      r['Status'] = val; toast('Status updated to ' + val); render();
+      openDetail(r._row);
+    } catch (err) { toast(err.message, true); e.target.value = r['Status'] || 'New'; }
+  });
+}
+
+/* ---------- email confirm ---------- */
+async function confirmEmail(type) {
+  const row = +$('detailBox').dataset.row;
+  const r = list().find(x => x._row === row);
+  if (type === 'interview' && !DATA.bookingUrl) { toast('Add your Google Calendar booking link in Settings first.', true); openSettings(); return; }
+  $('confirmBox').innerHTML = '<div class="mbody"><div class="loading" style="padding:30px 0">Loading preview…</div></div>';
+  $('confirm').classList.add('show');
+  try {
+    const p = await call('previewEmail', TAB, type, r['Full Name']);
+    $('confirmBox').innerHTML = `
+      <button class="close" data-close-confirm>×</button>
+      <div class="mhead"><h2 style="font-size:22px">Send this email?</h2></div>
+      <div class="mbody">
+        ${r['Last Email Sent'] ? `<div class="warn">Heads up: this person was already emailed (${esc(r['Last Email Sent'])}).</div>` : ''}
+        <dl style="margin-bottom:12px"><dt>To</dt><dd>${esc(r['Full Name'])} &lt;${esc(r['Email'])}&gt;</dd>
+          <dt>From</dt><dd>${esc(p.from)}</dd><dt>Subject</dt><dd>${esc(p.subject)}</dd></dl>
+        <div class="preview">${esc(p.text)}</div>
+      </div>
+      <div class="actions">
+        <button class="btn ${type === 'pass' ? 'red' : type === 'interview' ? 'blue' : 'green'}" id="sendNow">Send Email</button>
+        <button class="btn red" style="border-color:var(--line);color:var(--body)" data-close-confirm>Cancel</button>
+      </div>`;
+    $('sendNow').addEventListener('click', async e => {
+      e.target.disabled = true; e.target.textContent = 'Sending…';
+      try {
+        const res = await call('sendTemplateEmail', TAB, type, r._row, r['Email'], r['Full Name']);
+        r['Status'] = res.status; r['Last Email Sent'] = res.lastEmail;
+        $('confirm').classList.remove('show');
+        toast('Email sent to ' + r['Full Name']);
+        render(); openDetail(r._row);
+      } catch (err) { toast(err.message, true); e.target.disabled = false; e.target.textContent = 'Send Email'; }
+    });
+  } catch (err) { $('confirm').classList.remove('show'); toast(err.message, true); }
+}
+
+/* ---------- settings ---------- */
+function openSettings() {
+  $('confirmBox').innerHTML = `
+    <button class="close" data-close-confirm>×</button>
+    <div class="mhead"><h2 style="font-size:22px">Settings</h2></div>
+    <div class="mbody">
+      <label class="f" for="bookingUrl">Google Calendar booking page link (for producer interviews)</label>
+      <input class="f" id="bookingUrl" placeholder="https://calendar.app.google/…" value="${esc(DATA.bookingUrl)}">
+      <p class="hint">In Google Calendar: Create → Appointment schedule, turn on Google Meet, save, then click "Open booking page" and paste that link here. Applicants who book get a calendar invite with the Meet link automatically.</p>
+      <p class="hint">All data lives in the <a href="${esc(DATA.sheetUrl)}" target="_blank">Google Sheet</a>.</p>
+    </div>
+    <div class="actions"><button class="btn" id="saveSettings">Save</button></div>`;
+  $('confirm').classList.add('show');
+  $('saveSettings').addEventListener('click', async e => {
+    e.target.disabled = true;
+    try { DATA.bookingUrl = await call('saveBookingUrl', $('bookingUrl').value); $('confirm').classList.remove('show'); toast('Settings saved'); }
+    catch (err) { toast(err.message, true); e.target.disabled = false; }
+  });
+}
+
+/* ---------- events ---------- */
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+  TAB = t.dataset.tab; STATUS = ''; $('q').value = '';
+  buildFilters(); render();
+}));
+$('q').addEventListener('input', render);
+$('roleFilter').addEventListener('change', render);
+$('statusFilter').addEventListener('change', e => { STATUS = e.target.value; render(); });
+$('stats').addEventListener('click', e => { const s = e.target.closest('.stat'); if (!s) return; STATUS = s.dataset.s; $('statusFilter').value = STATUS; render(); });
+$('grid').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) openDetail(+c.dataset.row); });
+$('refreshBtn').addEventListener('click', load);
+$('settingsBtn').addEventListener('click', () => DATA && openSettings());
+$('detail').addEventListener('click', e => {
+  if (e.target === $('detail') || e.target.closest('[data-close]')) { $('detail').classList.remove('show'); $('detailBox').innerHTML = ''; }
+  const b = e.target.closest('[data-email]'); if (b) confirmEmail(b.dataset.email);
+});
+$('confirm').addEventListener('click', e => {
+  if (e.target === $('confirm') || e.target.closest('[data-close-confirm]')) $('confirm').classList.remove('show');
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if ($('confirm').classList.contains('show')) $('confirm').classList.remove('show');
+  else { $('detail').classList.remove('show'); $('detailBox').innerHTML = ''; }
+});
+
+load();
+</script>
+</body>
+</html>
